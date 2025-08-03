@@ -1,16 +1,12 @@
-//
-//  NightScout.swift
-//  LoopFollow
-//
-//  Created by Jon Fawcett on 6/16/20.
-//  Copyright © 2020 Jon Fawcett. All rights reserved.
-//
+// LoopFollow
+// NightScout.swift
+// Created by Jon Fawcett.
 
 import Foundation
 import UIKit
 
 extension MainViewController {
-    //NS Cage Struct
+    // NS Cage Struct
     struct cageData: Codable {
         var created_at: String
     }
@@ -19,121 +15,91 @@ extension MainViewController {
         var created_at: String
     }
 
-    
-    //NS Basal Profile Struct
+    struct iageData: Codable {
+        var created_at: String
+    }
+
+    // NS Basal Profile Struct
     struct basalProfileStruct: Codable {
         var value: Double
         var time: String
         var timeAsSeconds: Double
     }
-    
-    struct NSProfile: Decodable {
-        struct Store: Decodable {
-            struct BasalEntry: Decodable {
-                let value: Double
-                let time: String
-                let timeAsSeconds: Double
-            }
-            
-            let basal: [BasalEntry]
-        }
-        
-        let store: [String: Store]
-        let defaultProfile: String
-    }
-    
-    //NS Basal Data  Struct
+
+    // NS Basal Data  Struct
     struct basalGraphStruct: Codable {
         var basalRate: Double
         var date: TimeInterval
     }
-    
-    //NS Bolus Data  Struct
+
+    // NS Bolus Data  Struct
     struct bolusGraphStruct: Codable {
         var value: Double
         var date: TimeInterval
         var sgv: Int
     }
-    
-    //NS Bolus Data  Struct
+
+    // NS Bolus Data  Struct
     struct carbGraphStruct: Codable {
         var value: Double
         var date: TimeInterval
         var sgv: Int
         var absorptionTime: Int
     }
-    
-    func isStaleData() -> Bool {
-        if bgData.count > 0 {
-            let now = dateTimeUtils.getNowTimeIntervalUTC()
-            let lastReadingTime = bgData.last!.date
-            let secondsAgo = now - lastReadingTime
-            if secondsAgo >= 20*60 {
-                return true
-            } else {
-                return false
-            }
-        } else {
-            return false
-        }
-    }
-        
-    func clearOldTempBasal()
-    {
+
+    func clearOldTempBasal() {
         basalData.removeAll()
         updateBasalGraph()
     }
-    
-    func clearOldBolus()
-    {
+
+    func clearOldBolus() {
         bolusData.removeAll()
         updateBolusGraph()
     }
-    
-    func clearOldSmb()
-    {
+
+    func clearOldSmb() {
         smbData.removeAll()
         updateSmbGraph()
+        updateChartRenderers()
     }
 
-    func clearOldCarb()
-    {
+    func clearOldCarb() {
         carbData.removeAll()
         updateCarbGraph()
     }
-    
-    func clearOldBGCheck()
-    {
+
+    func clearOldBGCheck() {
         bgCheckData.removeAll()
         updateBGCheckGraph()
     }
-    
-    func clearOldOverride()
-    {
+
+    func clearOldOverride() {
         overrideGraphData.removeAll()
         updateOverrideGraph()
     }
-    
-    func clearOldSuspend()
-    {
+
+    func clearOldTempTarget() {
+        tempTargetGraphData.removeAll()
+        updateTempTargetGraph()
+        updateChartRenderers()
+    }
+
+    func clearOldSuspend() {
         suspendGraphData.removeAll()
         updateSuspendGraph()
     }
-    
-    func clearOldResume()
-    {
+
+    func clearOldResume() {
         resumeGraphData.removeAll()
         updateResumeGraph()
     }
-    
-    func clearOldSensor()
-    {
+
+    func clearOldSensor() {
         sensorStartGraphData.removeAll()
         updateSensorStart()
     }
-    
-    func clearOldNotes()
-    {
+
+    func clearOldNotes() {
         noteGraphData.removeAll()
         updateNotes()
     }
